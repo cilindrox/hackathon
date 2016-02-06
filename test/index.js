@@ -5,7 +5,7 @@
 const Code = require('code');
 const Hapi = require('hapi');
 const Lab = require('lab');
-const Queue = require('../lib/modules');
+const Queue = require('../lib/modules/queue');
 
 // Declare internals
 
@@ -84,6 +84,23 @@ describe('Queue', () => {
         const server = internals.server;
         const request = {
             method: 'DELETE',
+            url: '/queue'
+        };
+
+        server.inject(request, (response) => {
+
+            expect(response.statusCode).to.equal(200);
+            expect(response.result).to.be.empty();
+            done();
+        });
+    });
+
+
+    it('lists the current queue', (done) => {
+
+        const server = internals.server;
+        const request = {
+            method: 'GET',
             url: '/queue'
         };
 

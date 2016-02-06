@@ -25,7 +25,8 @@
     "hapi": "13.x.x",
     "hoek": "3.x.x",
     "joi": "7.x.x",
-    "rejoice": "3.x.x"
+    "rejoice": "3.x.x",
+    "scooter": "^2.0.1"
   },
   "devDependencies": {
     "code": "2.x.x",
