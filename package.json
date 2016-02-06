@@ -26,7 +26,8 @@
     "hoek": "3.x.x",
     "joi": "7.x.x",
     "rejoice": "3.x.x",
-    "scooter": "^2.0.1"
+    "scooter": "2.x.x",
+    "twilio": "^3.3.0-edge"
   },
   "devDependencies": {
     "code": "2.x.x",

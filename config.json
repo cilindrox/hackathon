@@ -52,6 +52,15 @@
       "plugin": "scooter"
     },
     {
+      "plugin": {
+        "register": "./sms",
+        "options": {
+          "acctSid": "$env.TWILIO_ACCOUNT_SID",
+          "authToken": "$env.TWILIO_AUTH_TOKEN"
+        }
+      }
+    },
+    {
       "plugin": "./info"
     },
     {
