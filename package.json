@@ -2,7 +2,6 @@
   "name": "hackathon",
   "version": "0.0.0",
   "description": "hack all the things!",
-  "main": "''",
   "scripts": {
     "start": "rejoice -c config.json -p lib/modules",
     "test": "lab -a code -t 100 -L",
@@ -23,6 +22,7 @@
     "good": "6.x.x",
     "good-console": "5.x.x",
     "hapi": "13.x.x",
+    "hapi-ioredis": "2.x.x",
     "hoek": "3.x.x",
     "joi": "7.x.x",
     "rejoice": "3.x.x",

@@ -14,3 +14,14 @@ hack all the things!
 5. PROFIT!
 
 *NOTE*: this requires the `PORT` env var to be set to a sane value (like `3000`).
+
+
+### Configuration
+
+The following env vars need to be set in order for this to work:
+
+ - `PORT`: server port
+ - `TWILIO_ACCOUNT_SID`: Twilio account SID
+ - `TWILIO_AUTH_TOKEN`: Twilio API credentials
+ - `TWILIO_FROM_NUM`: your Twilio account number
+ - `REDISCLOUD_URL`: Redis DS uri

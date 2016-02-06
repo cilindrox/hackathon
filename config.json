@@ -53,6 +53,14 @@
     },
     {
       "plugin": {
+        "register": "hapi-ioredis",
+        "options": {
+          "url": "$env.REDISCLOUD_URL"
+        }
+      }
+    },
+    {
+      "plugin": {
         "register": "./sms",
         "options": {
           "acctSid": "$env.TWILIO_ACCOUNT_SID",

@@ -6,6 +6,7 @@ const Code = require('code');
 const Hapi = require('hapi');
 const Lab = require('lab');
 const Queue = require('../lib/modules/queue');
+const Redis = require('hapi-ioredis');
 
 // Declare internals
 
@@ -24,7 +25,38 @@ const expect = Code.expect;
 
 describe('Queue', () => {
 
+    internals.SmsMock = {
+        register: (server, options, next) => {
+
+            const client = {
+                sendMessage: (payload, cb) => {
+
+                    expect(payload).to.deep.equal({
+                        to: '55555',
+                        from: undefined,
+                        body: 'You have been added to the waitlist. Text \'9\' if you need to cancel.'
+                    });
+
+                    cb(null, {});
+                }
+            };
+
+            server.decorate('request', 'twilio', client);
+            return next();
+        }
+    };
+
+    internals.SmsMock.register.attributes = { name: 'sms' };
+
     internals.plugins = [
+        {
+            register: Redis,
+            options: { url: 'redis://:@127.0.0.1:6379' }
+        },
+        {
+            register: internals.SmsMock,
+            options: null
+        },
         {
             register: Queue,
             options: {}
@@ -48,6 +80,8 @@ describe('Queue', () => {
 
     afterEach((done) => {
 
+        const redis = internals.server.app.redis;
+        redis.flushall();
         internals.server = null;
         return done();
     });
@@ -67,7 +101,7 @@ describe('Queue', () => {
 
         server.inject(request, (response) => {
 
-            expect(response.statusCode).to.equal(201);
+            expect(response.statusCode).to.equal(200);
             expect(response.result).to.deep.equal([
                 {
                     phone: '55555',
