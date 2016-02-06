@@ -1,0 +1,32 @@
+{
+  "name": "hackathon",
+  "version": "0.0.0",
+  "description": "hack all the things!",
+  "main": "''",
+  "scripts": {
+    "test": "lab"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cilindrox/hackathon.git"
+  },
+  "author": "Gaston Festari <cilindrox@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cilindrox/hackathon/issues"
+  },
+  "homepage": "https://github.com/cilindrox/hackathon#readme",
+  "dependencies": {
+    "boom": "^3.1.2",
+    "good": "^6.5.0",
+    "good-console": "^5.3.1",
+    "hapi": "^13.0.0",
+    "hoek": "^3.0.4",
+    "joi": "^7.2.3",
+    "rejoice": "^3.1.0"
+  },
+  "devDependencies": {
+    "code": "^2.1.0",
+    "lab": "^8.2.0"
+  }
+}
