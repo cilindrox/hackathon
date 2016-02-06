@@ -4,7 +4,9 @@
   "description": "hack all the things!",
   "main": "''",
   "scripts": {
-    "test": "lab"
+    "start": "rejoice -c config.json -p lib/modules",
+    "test": "lab -a code -t 100 -L",
+    "test-cov-html": "lab -r html -o coverage.html -a code"
   },
   "repository": {
     "type": "git",
@@ -17,16 +19,16 @@
   },
   "homepage": "https://github.com/cilindrox/hackathon#readme",
   "dependencies": {
-    "boom": "^3.1.2",
-    "good": "^6.5.0",
-    "good-console": "^5.3.1",
-    "hapi": "^13.0.0",
-    "hoek": "^3.0.4",
-    "joi": "^7.2.3",
-    "rejoice": "^3.1.0"
+    "boom": "3.x.x",
+    "good": "6.x.x",
+    "good-console": "5.x.x",
+    "hapi": "13.x.x",
+    "hoek": "3.x.x",
+    "joi": "7.x.x",
+    "rejoice": "3.x.x"
   },
   "devDependencies": {
-    "code": "^2.1.0",
-    "lab": "^8.2.0"
+    "code": "2.x.x",
+    "lab": "8.x.x"
   }
 }
