@@ -55,7 +55,7 @@
       "plugin": {
         "register": "./db",
         "options": {
-          "url": "$env.MONGOLAB_URL"
+          "url": "$env.MONGOLAB_URI"
         }
       }
     },
