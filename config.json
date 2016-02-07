@@ -53,9 +53,9 @@
     },
     {
       "plugin": {
-        "register": "hapi-ioredis",
+        "register": "./db",
         "options": {
-          "url": "$env.REDISCLOUD_URL"
+          "url": "$env.MONGOLAB_URL"
         }
       }
     },

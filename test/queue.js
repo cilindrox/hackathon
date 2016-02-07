@@ -6,7 +6,8 @@ const Code = require('code');
 const Hapi = require('hapi');
 const Lab = require('lab');
 const Queue = require('../lib/modules/queue');
-const Redis = require('hapi-ioredis');
+const Mongo = require('../lib/modules/db');
+const Client = require('../lib/modules/db/model');
 
 // Declare internals
 
@@ -18,8 +19,8 @@ const internals = {};
 const lab = exports.lab = Lab.script();
 const it = lab.it;
 const describe = lab.describe;
-const beforeEach = lab.beforeEach;
 const afterEach = lab.afterEach;
+const before = lab.before;
 const expect = Code.expect;
 
 
@@ -50,8 +51,8 @@ describe('Queue', () => {
 
     internals.plugins = [
         {
-            register: Redis,
-            options: { url: 'redis://:@127.0.0.1:6379' }
+            register: Mongo,
+            options: { url: 'mongodb://localhost/test' }
         },
         {
             register: internals.SmsMock,
@@ -64,7 +65,7 @@ describe('Queue', () => {
     ];
 
 
-    beforeEach((done) => {
+    before((done) => {
 
         const server = new Hapi.Server();
         server.connection();
@@ -80,10 +81,7 @@ describe('Queue', () => {
 
     afterEach((done) => {
 
-        const redis = internals.server.app.redis;
-        redis.flushall();
-        internals.server = null;
-        return done();
+        return Client.remove({}, done);
     });
 
 
@@ -92,7 +90,7 @@ describe('Queue', () => {
         const server = internals.server;
         const request = {
             method: 'POST',
-            url: '/queue',
+            url: '/items',
             payload: {
                 phone: '55555',
                 name: 'Mr. Pupi'
@@ -102,30 +100,45 @@ describe('Queue', () => {
         server.inject(request, (response) => {
 
             expect(response.statusCode).to.equal(200);
-            expect(response.result).to.deep.equal([
-                {
-                    phone: '55555',
-                    name: 'Mr. Pupi'
-                }
-            ]);
-            done();
+            Client
+                .find({})
+                .lean()
+                .exec((err, list) => {
+
+                    expect(err).to.not.exist();
+                    expect(response.result).to.have.length(1);
+
+                    delete list[0].__v;
+
+                    expect(response.result).to.deep.equal(list);
+                    done();
+                });
         });
     });
 
 
     it('removes an existing entry from the queue', (done) => {
 
-        const server = internals.server;
-        const request = {
-            method: 'DELETE',
-            url: '/queue'
-        };
+        Client.create({
+            phone: '55555',
+            name: 'Mr. Pupi'
+        }, (err, saved) => {
 
-        server.inject(request, (response) => {
+            expect(err).to.not.exist();
 
-            expect(response.statusCode).to.equal(200);
-            expect(response.result).to.be.empty();
-            done();
+            const server = internals.server;
+            const request = {
+                method: 'DELETE',
+                url: `/items/${ saved.id }`
+            };
+
+            server.inject(request, (response) => {
+
+
+                expect(response.statusCode).to.equal(200);
+                expect(response.result).to.be.empty();
+                done();
+            });
         });
     });
 
@@ -135,7 +148,7 @@ describe('Queue', () => {
         const server = internals.server;
         const request = {
             method: 'GET',
-            url: '/queue'
+            url: '/items'
         };
 
         server.inject(request, (response) => {
